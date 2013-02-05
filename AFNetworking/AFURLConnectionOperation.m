@@ -32,13 +32,6 @@ typedef enum {
     AFOperationFinishedState    = 3,
 } _AFOperationState;
 
-typedef signed short AFOperationState;
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
-typedef UIBackgroundTaskIdentifier AFBackgroundTaskIdentifier;
-#else
-typedef id AFBackgroundTaskIdentifier;
-#endif
 
 static NSString * const kAFNetworkingLockName = @"com.alamofire.networking.operation.lock";
 
@@ -48,12 +41,6 @@ NSString * const AFNetworkingOperationFailingURLResponseErrorKey = @"AFNetworkin
 
 NSString * const AFNetworkingOperationDidStartNotification = @"com.alamofire.networking.operation.start";
 NSString * const AFNetworkingOperationDidFinishNotification = @"com.alamofire.networking.operation.finish";
-
-typedef void (^AFURLConnectionOperationProgressBlock)(NSUInteger bytes, long long totalBytes, long long totalBytesExpected);
-typedef BOOL (^AFURLConnectionOperationAuthenticationAgainstProtectionSpaceBlock)(NSURLConnection *connection, NSURLProtectionSpace *protectionSpace);
-typedef void (^AFURLConnectionOperationAuthenticationChallengeBlock)(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge);
-typedef NSCachedURLResponse * (^AFURLConnectionOperationCacheResponseBlock)(NSURLConnection *connection, NSCachedURLResponse *cachedResponse);
-typedef NSURLRequest * (^AFURLConnectionOperationRedirectResponseBlock)(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse);
 
 static inline NSString * AFKeyPathFromOperationState(AFOperationState state) {
     switch (state) {
@@ -100,6 +87,7 @@ static inline BOOL AFStateTransitionIsValid(AFOperationState fromState, AFOperat
 }
 
 @interface AFURLConnectionOperation ()
+
 @property (readwrite, nonatomic, assign) AFOperationState state;
 @property (readwrite, nonatomic, assign, getter = isCancelled) BOOL cancelled;
 @property (readwrite, nonatomic, retain) NSRecursiveLock *lock;

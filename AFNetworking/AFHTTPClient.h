@@ -90,7 +90,19 @@ typedef enum {
 
 @protocol AFMultipartFormData;
 
-@interface AFHTTPClient : NSObject <NSCoding, NSCopying>
+@interface AFHTTPClient : NSObject <NSCoding, NSCopying> {
+    NSURL *_baseURL;
+    NSMutableArray *_registeredHTTPOperationClassNames;
+    NSMutableDictionary *_defaultHeaders;
+    NSOperationQueue *_operationQueue;
+    NSStringEncoding _stringEncoding;
+    AFHTTPClientParameterEncoding _parameterEncoding;
+#ifdef _SYSTEMCONFIGURATION_H
+    AFNetworkReachabilityRef _networkReachability;
+    AFNetworkReachabilityStatus _networkReachabilityStatus;
+    AFNetworkReachabilityStatusBlock _networkReachabilityStatusBlock;
+#endif
+}
 
 ///---------------------------------------
 /// @name Accessing HTTP Client Properties
@@ -505,7 +517,7 @@ extern NSString * const AFNetworkingReachabilityNotificationStatusItem;
 /**
  The `AFMultipartFormData` protocol defines the methods supported by the parameter in the block argument of `-multipartFormRequestWithMethod:path:parameters:constructingBodyWithBlock:`.
  */
-@protocol AFMultipartFormData
+@protocol AFMultipartFormData 
 
 /**
  Appends HTTP headers, followed by the encoded data and the multipart form boundary.

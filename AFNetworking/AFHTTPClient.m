@@ -41,7 +41,12 @@
 #import <netdb.h>
 #endif
 
-@interface AFMultipartFormData : NSObject <AFMultipartFormData>
+@interface AFMultipartFormData : NSObject <AFMultipartFormData> {
+    NSMutableURLRequest *_request;
+    NSStringEncoding _stringEncoding;
+    NSOutputStream *_outputStream;
+    NSString *_temporaryFilePath;
+}
 
 - (id)initWithURLRequest:(NSMutableURLRequest *)request
           stringEncoding:(NSStringEncoding)encoding;
@@ -102,7 +107,11 @@ static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NS
 
 #pragma mark -
 
-@interface AFQueryStringPair : NSObject
+@interface AFQueryStringPair : NSObject {
+    id _field;
+    id _value;
+}
+
 @property (readwrite, nonatomic, retain) id field;
 @property (readwrite, nonatomic, retain) id value;
 
@@ -111,7 +120,7 @@ static NSString * AFPercentEscapedQueryStringPairMemberFromStringWithEncoding(NS
 
 @end
 
-@implementation AFQueryStringPair
+@implementation AFQueryStringPair 
 @synthesize field = _field;
 @synthesize value = _value;
 

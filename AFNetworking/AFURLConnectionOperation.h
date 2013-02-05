@@ -71,7 +71,40 @@
  - A copy of an operation will not include the `outputStream` of the original.
  - Operation copies do not include `completionBlock`. `completionBlock` often strongly captures a reference to `self`, which, perhaps surprisingly, would otherwise point to the _original_ operation when copied.
  */
-@interface AFURLConnectionOperation : NSOperation <NSCoding, NSCopying>
+typedef signed short AFOperationState;
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
+typedef UIBackgroundTaskIdentifier AFBackgroundTaskIdentifier;
+#else
+typedef id AFBackgroundTaskIdentifier;
+#endif
+
+typedef void (^AFURLConnectionOperationProgressBlock)(NSUInteger bytes, long long totalBytes, long long totalBytesExpected);
+typedef BOOL (^AFURLConnectionOperationAuthenticationAgainstProtectionSpaceBlock)(NSURLConnection *connection, NSURLProtectionSpace *protectionSpace);
+typedef void (^AFURLConnectionOperationAuthenticationChallengeBlock)(NSURLConnection *connection, NSURLAuthenticationChallenge *challenge);
+typedef NSCachedURLResponse * (^AFURLConnectionOperationCacheResponseBlock)(NSURLConnection *connection, NSCachedURLResponse *cachedResponse);
+typedef NSURLRequest * (^AFURLConnectionOperationRedirectResponseBlock)(NSURLConnection *connection, NSURLRequest *request, NSURLResponse *redirectResponse);
+
+@interface AFURLConnectionOperation : NSOperation <NSCoding, NSCopying> {
+    AFOperationState _state;
+    BOOL _cancelled;
+    NSRecursiveLock *_lock;
+    NSURLConnection *_connection;
+    NSURLRequest *_request;
+    NSURLResponse *_response;
+    NSError *_error;
+    NSData *_responseData;
+    NSString *_responseString;
+    long long _totalBytesRead;
+    AFBackgroundTaskIdentifier _backgroundTaskIdentifier;
+    AFURLConnectionOperationProgressBlock _uploadProgress;
+    AFURLConnectionOperationProgressBlock _downloadProgress;
+    AFURLConnectionOperationAuthenticationAgainstProtectionSpaceBlock _authenticationAgainstProtectionSpace;
+    AFURLConnectionOperationAuthenticationChallengeBlock _authenticationChallenge;
+    AFURLConnectionOperationCacheResponseBlock _cacheResponse;
+    AFURLConnectionOperationRedirectResponseBlock _redirectResponse;
+    NSSet *_runLoopModes;
+    NSOutputStream *_outputStream;
+}
 
 ///-------------------------------
 /// @name Accessing Run Loop Modes
