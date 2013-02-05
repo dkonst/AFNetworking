@@ -71,6 +71,11 @@
  - A copy of an operation will not include the `outputStream` of the original.
  - Operation copies do not include `completionBlock`. `completionBlock` often strongly captures a reference to `self`, which, perhaps surprisingly, would otherwise point to the _original_ operation when copied.
  */
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
+#import <UIKit/UIKit.h>
+#endif
+
 typedef signed short AFOperationState;
 #if __IPHONE_OS_VERSION_MIN_REQUIRED
 typedef UIBackgroundTaskIdentifier AFBackgroundTaskIdentifier;

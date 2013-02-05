@@ -21,9 +21,7 @@
 // THE SOFTWARE.
 
 #import "AFURLConnectionOperation.h"
-#if __IPHONE_OS_VERSION_MIN_REQUIRED
-#import <UIKit/UIKit.h>
-#endif
+
 
 typedef enum {
     AFOperationPausedState      = -1,

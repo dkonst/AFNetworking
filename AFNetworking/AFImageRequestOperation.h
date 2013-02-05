@@ -50,7 +50,11 @@
  - `image/x-win-bitmap`
  */
 @interface AFImageRequestOperation : AFHTTPRequestOperation {
+#if __IPHONE_OS_VERSION_MIN_REQUIRED
+    UIImage *_responseImage;
+#elif __MAC_OS_X_VERSION_MIN_REQUIRED
     NSImage *_responseImage;
+#endif
 }
 
 /**
